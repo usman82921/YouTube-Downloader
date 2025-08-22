@@ -13,14 +13,19 @@ export default async function handler(req, res) {
         "Accept": "*/*",
         "Accept-Encoding": "identity",
         "Connection": "keep-alive",
+        "Range": req.headers.range || "bytes=0-", // important for video download
       },
     });
 
     res.setHeader("Content-Type", response.headers.get("content-type") || "video/mp4");
+    if (response.headers.get("content-length")) {
+      res.setHeader("Content-Length", response.headers.get("content-length"));
+    }
+
+    // download ke liye header
     res.setHeader("Content-Disposition", "attachment; filename=video.mp4");
 
-    const buffer = await response.arrayBuffer();
-    res.send(Buffer.from(buffer));
+    response.body.pipe(res);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
