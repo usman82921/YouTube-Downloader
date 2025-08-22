@@ -1,40 +1,16 @@
+import ytdl from "ytdl-core";
+
 export default async function handler(req, res) {
-  const { url } = req.query;
+  const url = req.query.url;
 
   if (!url) {
-    return res.status(400).json({ error: "Missing URL" });
+    return res.status(400).json({ error: "No URL provided" });
   }
 
   try {
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36",
-        "Accept": "*/*",
-        "Accept-Encoding": "identity",
-        "Connection": "keep-alive",
-        "Range": req.headers.range || "bytes=0-",
-      },
-    });
-
-    res.setHeader(
-      "Content-Type",
-      response.headers.get("content-type") || "video/mp4"
-    );
-    if (response.headers.get("content-length")) {
-      res.setHeader(
-        "Content-Length",
-        response.headers.get("content-length")
-      );
-    }
-
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=video.mp4"
-    );
-
-    response.body.pipe(res);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.setHeader("Content-Disposition", 'attachment; filename="video.mp4"');
+    ytdl(url, { format: "mp4" }).pipe(res);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to download video", details: err.message });
   }
 }
