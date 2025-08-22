@@ -7,14 +7,12 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (data.success) {
-      // tinyurl short link
-      const short = await fetch("http://tinyurl.com/api-create.php?url=" + encodeURIComponent(data.data.url_mp4_youtube));
-      const shortLink = await short.text();
+      const proxyUrl = `/api/proxy?url=${encodeURIComponent(data.data.url_mp4_youtube)}`;
 
       res.status(200).json({
         success: true,
         title: data.data.name_mp4,
-        download: shortLink
+        download: proxyUrl,
       });
     } else {
       res.status(200).json({ success: false });
