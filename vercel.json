@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/proxy" }]
+  "version": 2,
+  "builds": [
+    { "src": "pages/**/*.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/pages/$1" }
+  ]
 }
