@@ -1,126 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MP3 Downloader</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background: #0d0d0d;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-    .brand {
-      font-weight: 700;
-      font-size: 2rem;
-      background: linear-gradient(45deg,#ff0050,#ff7b00,#00f2ea);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .card {
-      background: #1a1a1a;
-      border-radius: 16px;
-      border: 1px solid #333;
-      padding: 20px;
-    }
-    /* 🎨 TikTok Glow Button */
-    .btn-glow {
-      background: linear-gradient(45deg,#ff0050,#ff7b00,#00f2ea);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 12px 24px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 0 15px rgba(255, 0, 80, 0.8), 0 0 25px rgba(0, 242, 234, 0.6);
-      transition: all 0.3s ease-in-out;
-    }
-    .btn-glow:hover {
-      transform: scale(1.07);
-      box-shadow: 0 0 25px rgba(255, 123, 0, 0.9), 0 0 45px rgba(0, 242, 234, 0.9);
-    }
-    .footer {
-      margin-top: 40px;
-      text-align: center;
-    }
-    .telegram-btn {
-      background: #0088cc;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 20px;
-      font-weight: bold;
-      color: white;
-      text-decoration: none;
-      box-shadow: 0 0 10px rgba(0,136,204,0.8);
-      transition: all 0.3s;
-    }
-    .telegram-btn:hover {
-      box-shadow: 0 0 25px rgba(0,136,204,1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free YouTube to MP3</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .header h1 {
+            color: #3c6e71;
+        }
+        .download-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .input-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            background: linear-gradient(45deg, #ff0050, #ff7b00, #00f2ea);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.5);
+        }
+        .status-text {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #3c6e71;
+        }
+        .progress {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            height: 5px;
+            margin-top: 10px;
+        }
+        .progress-bar {
+            height: 5px;
+            width: 0;
+            background-color: #ff0050;
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .telegram-btn {
+            background: linear-gradient(135deg, #0088cc, #00aced);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .telegram-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.6);
+        }
+    </style>
 </head>
 <body>
-  <div class="container py-5 text-center">
-    <h1 class="brand mb-4">🎵 MP3 Downloader</h1>
-
-    <div class="row justify-content-center">
-      <div class="col-lg-7">
-        <div class="card shadow-sm">
-          <input id="ytUrl" class="form-control mb-3" placeholder="Paste video link here..." />
-
-          <button class="btn-glow w-100" onclick="downloadMP3()">⬇ Download MP3</button>
-
-          <div id="status" class="mt-3"></div>
-          <div id="result" class="mt-3"></div>
+    <div class="header">
+        <h1>Free YouTube to MP3</h1>
+        <p>Convert YouTube videos to MP3. Download free audio 100%.</p>
+    </div>
+    
+    <div class="download-box">
+        <div class="input-group">
+            <input type="text" id="youtube-url" placeholder="Paste YouTube link here...">
         </div>
-      </div>
+        <button class="btn" onclick="processUrl()">Convert to MP3</button>
+
+        <div id="loading" class="status-text" style="display:none;">Converting...</div>
+
+        <div id="result" class="status-text" style="display:none;">
+            <p>Your MP3 is ready!</p>
+            <button class="btn" id="download-btn">Download MP3</button>
+        </div>
+
+        <div id="progress-container" style="display:none;">
+            <p class="status-text">Converting...</p>
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
     </div>
 
     <div class="footer">
-      <a class="telegram-btn" href="https://t.me/ZALIM_MODZ_OFFICIAL" target="_blank">📢 Join Telegram</a>
+        <a href="https://t.me/ZALIM_MODZ_OFFICIAL" class="telegram-btn" target="_blank">Join Our Telegram</a>
     </div>
-  </div>
 
-  <script>
-    async function downloadMP3() {
-      const url = document.getElementById('ytUrl').value.trim();
-      const status = document.getElementById('status');
-      const result = document.getElementById('result');
-      status.innerHTML = "<span class='text-warning'>⏳ Processing…</span>";
-      result.innerHTML = "";
+    <script>
+        let videoData = null;
+        
+        function processUrl() {
+            const url = document.getElementById('youtube-url').value.trim();
+            const loadingText = document.getElementById('loading');
+            const progressContainer = document.getElementById('progress-container');
+            const resultContainer = document.getElementById('result');
+            const progressBar = document.getElementById('progress-bar');
 
-      if(!url) {
-        status.innerHTML = "<span class='text-danger'>❌ Please paste a video URL.</span>";
-        return;
-      }
+            // Reset UI
+            resultContainer.style.display = 'none';
+            progressContainer.style.display = 'block';
+            loadingText.style.display = 'block';
+            progressBar.style.width = '0%';
 
-      try {
-        const res = await fetch("/api/mp3?url=" + encodeURIComponent(url));
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || ("Request failed with " + res.status));
+            if (!url) {
+                alert('Please enter a valid URL');
+                return;
+            }
+
+            // Simulating progress
+            let progress = 0;
+            let progressInterval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    getMP3(url);
+                }
+            }, 500); // Simulate conversion time
         }
-        const data = await res.json();
-        if (data && data.status === "success") {
-          status.innerHTML = "<span class='text-success'>✅ Ready</span>";
-          result.innerHTML = `
-            <div class="alert alert-dark">
-              <div class="fw-bold mb-2">Title:</div>
-              <div class="mb-3">${data.title}</div>
-              <a class="btn-glow w-100" href="${data.download_url}" target="_blank" rel="noopener">⬇ Download Now</a>
-            </div>
-          `;
-        } else {
-          status.innerHTML = "<span class='text-danger'>❌ Failed to fetch MP3.</span>";
-          result.innerHTML = data && data.error ? `<code>${data.error}</code>` : "";
+
+        function getMP3(url) {
+            fetch(`/api/mp3?url=${encodeURIComponent(url)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        videoData = data;
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('progress-container').style.display = 'none';
+                        document.getElementById('result').style.display = 'block';
+                        document.getElementById('download-btn').onclick = () => {
+                            window.location.href = videoData.download_url;
+                        };
+                    } else {
+                        alert('Failed to fetch MP3. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                    document.getElementById('loading').style.display = 'none';
+                });
         }
-      } catch (e) {
-        status.innerHTML = "<span class='text-danger'>❌ Error</span>";
-        result.innerHTML = `<pre class="text-danger" style="white-space: pre-wrap">${e.message}</pre>`;
-      }
-    }
-  </script>
+    </script>
 </body>
 </html>
