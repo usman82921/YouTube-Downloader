@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       res.status(200).json({
         success: true,
         title: data.data.name_mp4,
-        download: data.data.url_mp4_youtube  // 👈 direct signed link
+        download: data.data.url_mp4_youtube   // fresh direct link
       });
     } else {
       res.status(200).json({ success: false });
