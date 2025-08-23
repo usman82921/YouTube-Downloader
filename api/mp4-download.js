@@ -20,9 +20,8 @@ export default async function handler(req, res) {
       const readStream = fs.createReadStream(filePath);
       readStream.pipe(res);
 
-      res.on("finish", () => {
-        fs.unlinkSync(filePath); // auto delete
-        console.log("Temp file deleted:", filePath);
+      res.on("close", () => {
+        fs.unlink(filePath, () => {}); // delete after send
       });
     });
   } catch (err) {
