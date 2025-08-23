@@ -1,18 +1,21 @@
-import ytdl from "ytdl-core";
-
 export default async function handler(req, res) {
   const { url } = req.query;
-  if (!url) return res.status(400).json({ error: "Missing URL" });
+  const MP3_API = "https://ytdownloader.anshppt19.workers.dev/?url=";
 
   try {
-    const info = await ytdl.getInfo(url);
-    const title = info.videoDetails.title;
+    const response = await fetch(MP3_API + encodeURIComponent(url));
+    const data = await response.json();
 
-    res.json({
-      title,
-      download: `https://api.vevioz.com/?url=${encodeURIComponent(url)}&type=mp3`
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (data.status === "success") {
+      res.status(200).json({
+        success: true,
+        title: data.title,
+        download: data.download_url
+      });
+    } else {
+      res.status(200).json({ success: false });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 }
