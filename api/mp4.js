@@ -1,25 +1,18 @@
-import fs from "fs";
-import path from "path";
 import ytdl from "ytdl-core";
 
 export default async function handler(req, res) {
   const { url } = req.query;
-  if (!url) return res.status(400).json({ error: "No URL provided" });
+  if (!url) return res.status(400).json({ error: "Missing URL" });
 
   try {
-    const filePath = path.resolve("/tmp", `video-${Date.now()}.mp4`);
+    const info = await ytdl.getInfo(url);
+    const title = info.videoDetails.title;
 
-    const video = ytdl(url, { quality: "highest" });
-    const writeStream = fs.createWriteStream(filePath);
-
-    video.pipe(writeStream);
-
-    writeStream.on("finish", () => {
-      res.status(200).json({
-        download_url: `/api/mp4-download?file=${path.basename(filePath)}`
-      });
+    // Temporary redirect to internal download API
+    res.json({
+      title,
+      download: `/api/mp4-download?url=${encodeURIComponent(url)}`
     });
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
