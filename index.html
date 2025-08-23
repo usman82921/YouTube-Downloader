@@ -10,7 +10,24 @@
     .card { background: #14141a; border-radius: 16px; border: 1px solid #222; }
     .brand { font-weight: 700; letter-spacing: .5px; }
     .footer { opacity: .7; font-size: .9rem; }
-    a.btn { border-radius: 10px; }
+
+    /* 🎨 TikTok Glow Button */
+    .btn-glow {
+      background: linear-gradient(45deg, #ff0050, #ff7b00, #00f2ea);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 0 15px rgba(255, 0, 80, 0.8), 0 0 25px rgba(0, 242, 234, 0.6);
+      transition: all 0.3s ease-in-out;
+    }
+    .btn-glow:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 25px rgba(255, 123, 0, 0.9), 0 0 45px rgba(0, 242, 234, 0.9);
+    }
   </style>
 </head>
 <body>
@@ -29,7 +46,7 @@
           </div>
 
           <div class="mt-3 d-flex gap-2">
-            <button class="btn btn-success" onclick="downloadMP3()">🎧 Get MP3</button>
+            <button class="btn-glow" onclick="downloadMP3()">🎧 Get MP3</button>
             <button class="btn btn-outline-secondary" onclick="clearResult()">Clear</button>
           </div>
 
@@ -70,7 +87,7 @@
             <div class="alert alert-dark">
               <div class="fw-bold mb-2">Title:</div>
               <div class="mb-3">${data.title}</div>
-              <a class="btn btn-success" href="${data.download_url}" target="_blank" rel="noopener">Download MP3</a>
+              <a class="btn-glow" href="${data.download_url}" target="_blank" rel="noopener">⬇ Download MP3</a>
             </div>
           `;
         } else {
