@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Downloader 🎵🎬</title>
+</head>
+<body style="text-align:center; margin-top:50px;">
+  <h2>YouTube Downloader 🎵🎬</h2>
+  <input id="ytUrl" type="text" placeholder="Enter YouTube URL" style="padding:10px; width:60%">
+  <button onclick="getLinks()" style="padding:10px; margin-left:10px;">Get Links</button>
+  <div id="result" style="margin-top:20px;"></div>
+
+  <script>
+    async function getLinks() {
+      const url = document.getElementById("ytUrl").value;
+      document.getElementById("result").innerHTML = "⏳ Processing...";
+
+      try {
+        const mp3Res = await fetch(`/api/mp3?url=${encodeURIComponent(url)}`);
+        const mp3 = await mp3Res.json();
+
+        const mp4Res = await fetch(`/api/mp4?url=${encodeURIComponent(url)}`);
+        const mp4 = await mp4Res.json();
+
+        document.getElementById("result").innerHTML = `
+          <p><a href="${mp3.download_url}" download>🎧 Download MP3</a></p>
+          <p><a href="${mp4.download_url}" download>🎬 Download MP4</a></p>
+        `;
+      } catch (err) {
+        document.getElementById("result").innerHTML = "❌ Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
