@@ -20,7 +20,7 @@
 
       <div class="mt-3">
         <button class="btn btn-success me-2" onclick="downloadFile('mp3')">🎧 Download MP3</button>
-        <button class="btn btn-danger" onclick="downloadFile('mp4')">🎬 Download MP4</button>
+        <button class="btn btn-danger" onclick="openVideo()">🎬 Open Video</button>
       </div>
     </div>
 
@@ -38,20 +38,34 @@
         let data = await res.json();
 
         if (data.success) {
-          if (type === "mp3") {
-            resultDiv.innerHTML = `
-              <h4>✅ ${data.title}</h4>
-              <a href="${data.download}" class="btn btn-success" target="_blank">Download MP3</a>
-            `;
-          } else {
-            resultDiv.innerHTML = `
-              <h4>✅ ${data.title}</h4>
-              <a href="${data.download}" class="btn btn-danger" target="_blank">🎬 Open Video</a>
-              <p class="text-muted mt-2">(Video will open in browser, then you can play or download)</p>
-            `;
-          }
+          resultDiv.innerHTML = `
+            <h4>✅ ${data.title}</h4>
+            <a href="${data.download}" class="btn btn-success" target="_blank">Download MP3</a>
+          `;
         } else {
           resultDiv.innerHTML = "<p class='text-danger'>❌ Failed to fetch</p>";
+        }
+      } catch (e) {
+        resultDiv.innerHTML = `<p class='text-danger'>❌ Error: ${e.message}</p>`;
+      }
+    }
+
+    // NEW FUNCTION for MP4 (fetch only when button clicked)
+    async function openVideo() {
+      let url = document.getElementById("ytUrl").value.trim();
+      let resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "<p class='text-warning'>⏳ Fetching fresh video link...</p>";
+
+      try {
+        let res = await fetch(`/api/mp4?url=${encodeURIComponent(url)}`);
+        let data = await res.json();
+
+        if (data.success) {
+          // direct open fresh googlevideo link
+          window.open(data.download, "_blank");
+          resultDiv.innerHTML = `<h4>✅ ${data.title}</h4><p>Video opened in new tab.</p>`;
+        } else {
+          resultDiv.innerHTML = "<p class='text-danger'>❌ Failed to fetch video</p>";
         }
       } catch (e) {
         resultDiv.innerHTML = `<p class='text-danger'>❌ Error: ${e.message}</p>`;
